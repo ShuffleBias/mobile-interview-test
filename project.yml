@@ -1,0 +1,82 @@
+name: ResortPassInterview
+
+options:
+  bundleIdPrefix: com.resortpass
+  deploymentTarget:
+    iOS: "17.0"
+  generateEmptyDirectories: true
+  defaultConfig: Debug
+  createIntermediateGroups: true
+
+packages:
+  SnapshotTesting:
+    url: https://github.com/pointfreeco/swift-snapshot-testing
+    from: "1.17.0"
+
+targets:
+  ResortPassInterview:
+    type: application
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: ResortPassInterview
+    resources:
+      - path: ResortPassInterview/Resources
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.resortpass.interview
+        SWIFT_VERSION: "6.0"
+        TARGETED_DEVICE_FAMILY: "1"
+        SWIFT_STRICT_CONCURRENCY: complete
+        DEBUG_INFORMATION_FORMAT: dwarf-with-dsym
+    info:
+      path: ResortPassInterview/Resources/Info.plist
+      properties:
+        CFBundleDisplayName: ResortPass
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        UISupportedInterfaceOrientations~ipad:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+
+  ResortPassInterviewTests:
+    type: bundle.unit-test
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: ResortPassInterviewTests
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.resortpass.interview.tests
+        SWIFT_VERSION: "6.0"
+        SWIFT_STRICT_CONCURRENCY: complete
+        GENERATE_INFOPLIST_FILE: YES
+    dependencies:
+      - target: ResortPassInterview
+      - package: SnapshotTesting
+        product: SnapshotTesting
+
+schemes:
+  ResortPassInterview:
+    build:
+      targets:
+        ResortPassInterview: all
+        ResortPassInterviewTests: [test]
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets:
+        - name: ResortPassInterviewTests
+          parallelizable: true
+          randomExecutionOrder: true
+    profile:
+      config: Release
+    analyze:
+      config: Debug
+    archive:
+      config: Release
